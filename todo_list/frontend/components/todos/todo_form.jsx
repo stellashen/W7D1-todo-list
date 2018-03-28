@@ -6,35 +6,24 @@ export default class TodoForm extends React.Component {
     this.state = {
       title: "",
       body: "",
-      id: 100,
-      done: true
+      done: false
     };
     this.createNewTodo = this.createNewTodo.bind(this);
   }
 
-  linkState(key) {
-    console.dir(event.currentTarget);
-    if (key === 'done') {
-      let doneVal = false;
-      if (this.state.done === "true" || this.state.done === true) {
-        doneVal = true;
-        console.log("inside if");
-      }
-      return (event => this.setState({[key]: doneVal}));
-    } else {
-      return (event => this.setState({[key]: event.currentTarget.value}));
-    }
+  update(property) {
+    return e => this.setState({[property]: e.target.value});
   }
 
   createNewTodo(e) {
     e.preventDefault();
-    // this.state.id = createId();
-    // debugger;
-    this.setState({id: createId()});
-    // this.checkBoxState();
-    // this.linkState(e);
-    console.log(this.props.receiveTodo);
-    this.props.receiveTodo(this.state);
+    const todo = Object.assign({}, { id: createId() }, this.state);
+    this.props.receiveTodo(todo);
+    // reset form
+    this.setState({
+      title: "",
+      body: ""
+    });
   }
 
   checkBoxState() {
@@ -51,28 +40,24 @@ export default class TodoForm extends React.Component {
 
   render() {
     return (
-      <form onSubmit={ this.createNewTodo }>
+      <form className="todo-form" onSubmit={ this.createNewTodo }>
         <label>Title
-        <input onChange={this.linkState('title')} type="text"
+        <input
+          onChange={this.update('title')}
+          type="text"
           value={this.state.title}/>
         </label>
 
         <br/>
 
         <label>Body
-          <textarea onChange={this.linkState('body')}
-            value={this.state.body}>Enter details</textarea>
+          <textarea
+            onChange={this.update('body')}
+            value={this.state.body}></textarea>
         </label>
 
         <br/>
-
-        <label>Done?
-          <input onChange={this.linkState('done')} id="done"
-            value={this.state.done}  type="checkbox"/>
-        </label>
-
-        <br/>
-        <button id="submit-new-todo">Submit!</button>
+        <button id="submit-new-todo">Create new todo!</button>
       </form>
     );
   }

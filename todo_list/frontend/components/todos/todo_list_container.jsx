@@ -4,7 +4,6 @@ import TodoList from './todo_list'; // presentational component to connect
 import { allTodos } from '../../reducers/selectors';
 
 const mapStateToProps = (state) => { // map slice of state to props object
-	debugger
 	return ({
 	todos: allTodos(state),
 });
